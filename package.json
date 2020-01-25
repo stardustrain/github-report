@@ -1,0 +1,34 @@
+{
+  "name": "github-report",
+  "version": "1.0.0",
+  "description": "personal github report",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "start": "ts-node ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stardustrain/github-report.git"
+  },
+  "author": "kthanterran@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stardustrain/github-report/issues"
+  },
+  "homepage": "https://github.com/stardustrain/github-report#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dayjs": "^1.8.19",
+    "ramda": "^0.26.1",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
+    "ts-node": "^8.6.2"
+  }
+}
