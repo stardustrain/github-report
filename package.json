@@ -4,9 +4,9 @@
   "description": "personal github report",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "build": "tsc",
-    "start": "ts-node ./src/index.ts"
+    "test": "jest --config=jest.config.js",
+    "build": "tsc --project tsconfig.json",
+    "start": "ts-node --files src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,15 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
+    "@types/jest": "^24.9.1",
+    "@types/node": "^13.5.0",
+    "@types/ramda": "^0.26.40",
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
     "eslint": "^6.8.0",
     "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.0.0",
     "ts-node": "^8.6.2"
   }
 }
