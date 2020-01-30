@@ -1,6 +1,16 @@
 import { groupBy, keys, map, pipe, sortBy, prop, negate } from 'ramda'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
-type GroupedProject = ReturnType<typeof getProjectsGroupbyRepository>
+dayjs.extend(utc)
+
+const REPOSITORY_NAME = 0
+const PR_INFORMATION_INDEX = 1
+
+export const getToday = () =>
+  dayjs()
+    .utc()
+    .utcOffset(9)
 
 export const getFilteredPullrequest = (nodes: ResultNode[]) =>
   nodes.filter(prNode => prNode.__typename === 'PullRequest') as PullrequestNode[]
@@ -38,6 +48,21 @@ export const getContributionByRepository = (
 ) =>
   pipe(
     keys,
-    map(key => [key, generatePRInformation(projects[key])]),
-    sortBy(v => negate(prop(criteria)(v[1])))
+    map<string, [string, PRInformation]>(key => [key, generatePRInformation(projects[key])]),
+    sortBy(v => negate(prop(criteria)(v[PR_INFORMATION_INDEX])))
   )(projects)
+
+export const calculateContributionRatio = (contributions: ContributionByRepository, totalPRCount: number) =>
+  contributions.map<[string, ContributionRatio]>(contribution => [
+    contribution[REPOSITORY_NAME],
+    {
+      ...contribution[PR_INFORMATION_INDEX],
+      ratio: parseFloat((contribution[PR_INFORMATION_INDEX].totalPRCount / totalPRCount).toFixed(2)),
+    },
+  ])
+
+type GroupedProject = ReturnType<typeof getProjectsGroupbyRepository>
+type ContributionByRepository = ReturnType<typeof getContributionByRepository>
+export type ContributionRatio = PRInformation & { ratio: number }
+export type PRInformation = ReturnType<typeof generatePRInformation>
+export type Contributions = ReturnType<typeof calculateContributionRatio>
