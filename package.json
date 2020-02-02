@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/stardustrain/github-report#readme",
   "dependencies": {
+    "@slack/webhook": "^5.0.2",
     "axios": "^0.19.2",
     "dayjs": "^1.8.19",
     "ramda": "^0.26.1",

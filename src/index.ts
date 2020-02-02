@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { compose, isNil } from 'ramda'
+import { IncomingWebhook } from '@slack/webhook'
 
 import {
   getFilteredPullrequest,
@@ -92,19 +93,6 @@ const generateData = async () => {
     const personal = compose(generatePRInformation, getPersonalProjects)(nodes)
     const contribution = compose(getContributionByRepository, getProjectsGroupbyRepository)(nodes)
     const ratio = calculateContributionRatio(contribution, total.totalPRCount)
-
-    console.log(
-      JSON.stringify(
-        weeklyMessageBlock({
-          from,
-          to,
-          total: generateTotalInfoMessage(total),
-          personalProject: generatePersonalProjectMessage(personal),
-          contributions: generateContributionMessage(ratio),
-        })
-      )
-    )
-
     return weeklyMessageBlock({
       from,
       to,
@@ -117,4 +105,24 @@ const generateData = async () => {
   }
 }
 
-generateData()
+export const sendWebhook = async () => {
+  const url = process.env.HOOK_URL
+
+  if (isNil(url)) {
+    throw Error()
+  }
+
+  const webhook = new IncomingWebhook(url)
+  const messageBlock = await generateData()
+
+  if (isNil(messageBlock)) {
+    throw Error()
+  }
+
+  try {
+    await webhook.send(messageBlock)
+    console.info(JSON.stringify(messageBlock))
+  } catch (e) {
+    console.error(e)
+  }
+}
