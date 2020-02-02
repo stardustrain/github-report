@@ -105,7 +105,7 @@ const generateData = async () => {
   }
 }
 
-export const sendWebhook = async () => {
+export const sendGithubWeeklyReportWebhook = async () => {
   const url = process.env.HOOK_URL
 
   if (isNil(url)) {

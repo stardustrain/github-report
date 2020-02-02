@@ -15,8 +15,10 @@
 .github
 
 node_modules
+@types/
 src/
 README
 tsconfig.json
 jest.config.js
+.prettierrc.json
 !/dist
