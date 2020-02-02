@@ -1,0 +1,54 @@
+name: Deploy process
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm install
+      - name: Run test
+        run: npm run test
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Archive build artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: ./dist
+  deploy:
+    name: Deploy
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: ./dist
+      - name: Activate GCP service account
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '274.0.1'
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+      - name: Deploy
+        run: |
+          gcloud functions deploy sendWebhook --runtime nodejs10 --trigger-topic github-weekly --project=${{ secrets.PROJECT_ID }} --region asia-northeast1 --update-env-vars GITHUB_API_KEY=${{ secrets.GITHUB_API_KEY }},HOOK_URL=${{ secrets.HOOK_URL }}
