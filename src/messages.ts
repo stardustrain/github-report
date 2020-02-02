@@ -10,19 +10,19 @@ const indexedMap = addIndex<Contribution>(map)
 
 export const generateTotalInfoMessage = ({ lines, commits, totalPRCount }: PRInformation) => {
   const emogi = getTotalPRCountEmogi(totalPRCount)
-  return `:github: 전체통계 :merge: ${totalPRCount} ${emogi}\n ${commits} commit, ${lines.additions} lines added, ${lines.deletions} lines deleted.`
+  return `:github: *전체통계* :merge: *${totalPRCount}* pull requests ${emogi}\n *${commits}* commits, ${lines.additions} lines added, ${lines.deletions} lines deleted.`
 }
 
 export const generatePersonalProjectMessage = ({ lines, commits, totalPRCount }: PRInformation) => {
   const emogi = getPersonalProjectPRCountEmogi(totalPRCount)
-  return `개인 프로젝트 :merge: ${totalPRCount} ${emogi}\n ${commits} commit, ${lines.additions} lines added, ${lines.deletions} lines deleted.`
+  return `*개인 프로젝트* :merge: *${totalPRCount}* pull requests ${emogi}\n *${commits}* commits, ${lines.additions} lines added, ${lines.deletions} lines deleted.`
 }
 
 const generateRatioMessage = (contribution: Contribution) => {
   const { totalPRCount, commits, ratio } = contribution[PR_INFORMATION]
-  return `${contribution[REPOSITORY_NAME]}(${(ratio * 100).toFixed(
+  return `${contribution[REPOSITORY_NAME]} (${(ratio * 100).toFixed(
     0
-  )}%): ${totalPRCount} pull requests / ${commits} commits.`
+  )}%): *${totalPRCount}* pull requests | ${commits} commits.`
 }
 
 export const generateContributionMessage = (contributions: Contributions) => {
@@ -34,13 +34,13 @@ export const generateContributionMessage = (contributions: Contributions) => {
     return `1. ${generateRatioMessage(contributions[0])}`
   }
 
-  return pipe(
+  return `*프로젝트기여 TOP 5*\n${pipe(
     take(TAKE_MESSAGES),
     indexedMap(
       (contribution, i) => `${i + 1}. ${generateRatioMessage(contribution)}${i + 1 < TAKE_MESSAGES ? '\n' : ''}`
     ),
     join('')
-  )(contributions)
+  )(contributions)}`
 }
 
 export type TotalInformation = ReturnType<typeof generateTotalInfoMessage>
