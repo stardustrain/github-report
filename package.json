@@ -2,7 +2,7 @@
   "name": "github-report",
   "version": "1.0.0",
   "description": "personal github report",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "jest --config=jest.config.js",
     "build": "tsc --project tsconfig.json",

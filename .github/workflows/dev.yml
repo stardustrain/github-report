@@ -1,0 +1,20 @@
+name: Test for pull request
+
+on:
+  push:
+    branches:
+      - dev
+    pull_request:
+      - master
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm install
+      - name: Run test
+        run: npm run test
