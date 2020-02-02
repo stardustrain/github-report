@@ -10,6 +10,8 @@ import {
   calculateContributionRatio,
   getToday,
 } from './utils'
+import { generateTotalInfoMessage, generatePersonalProjectMessage, generateContributionMessage } from './messages'
+import { weeklyMessageBlock } from './messageBlock'
 
 const instance = axios.create({
   baseURL: 'https://api.github.com/graphql',
@@ -91,6 +93,25 @@ const generateData = async () => {
     const contribution = compose(getContributionByRepository, getProjectsGroupbyRepository)(nodes)
     const ratio = calculateContributionRatio(contribution, total.totalPRCount)
 
+    console.log(
+      JSON.stringify(
+        weeklyMessageBlock({
+          from,
+          to,
+          total: generateTotalInfoMessage(total),
+          personalProject: generatePersonalProjectMessage(personal),
+          contributions: generateContributionMessage(ratio),
+        })
+      )
+    )
+
+    return weeklyMessageBlock({
+      from,
+      to,
+      total: generateTotalInfoMessage(total),
+      personalProject: generatePersonalProjectMessage(personal),
+      contributions: generateContributionMessage(ratio),
+    })
   } catch (e) {
     console.error(e)
   }

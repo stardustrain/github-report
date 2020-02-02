@@ -4,8 +4,8 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-const REPOSITORY_NAME = 0
-const PR_INFORMATION_INDEX = 1
+export const REPOSITORY_NAME = 0
+export const PR_INFORMATION = 1
 
 export const getToday = () =>
   dayjs()
@@ -49,15 +49,15 @@ export const getContributionByRepository = (
   pipe(
     keys,
     map<string, [string, PRInformation]>(key => [key, generatePRInformation(projects[key])]),
-    sortBy(v => negate(prop(criteria)(v[PR_INFORMATION_INDEX])))
+    sortBy(v => negate(prop(criteria)(v[PR_INFORMATION])))
   )(projects)
 
 export const calculateContributionRatio = (contributions: ContributionByRepository, totalPRCount: number) =>
   contributions.map<[string, ContributionRatio]>(contribution => [
     contribution[REPOSITORY_NAME],
     {
-      ...contribution[PR_INFORMATION_INDEX],
-      ratio: parseFloat((contribution[PR_INFORMATION_INDEX].totalPRCount / totalPRCount).toFixed(2)),
+      ...contribution[PR_INFORMATION],
+      ratio: parseFloat((contribution[PR_INFORMATION].totalPRCount / totalPRCount).toFixed(2)),
     },
   ])
 

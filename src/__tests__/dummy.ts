@@ -710,4 +710,14 @@ const dummy: any = {
   ],
 }
 
+export const contributionsDummy: any = [
+  ['odc-frontend', { commits: 75, lines: { additions: 5885, deletions: 2498 }, totalPRCount: 19, ratio: 0.59 }],
+  ['odx-player', { commits: 10, lines: { additions: 162, deletions: 115 }, totalPRCount: 6, ratio: 0.19 }],
+  ['odx-admin-front', { commits: 7, lines: { additions: 661, deletions: 52 }, totalPRCount: 3, ratio: 0.09 }],
+  ['lucas-wiki', { commits: 5, lines: { additions: 182, deletions: 18 }, totalPRCount: 2, ratio: 0.06 }],
+  ['fe-assignment-lab', { commits: 1, lines: { additions: 91, deletions: 4 }, totalPRCount: 1, ratio: 0.03 }],
+  ['odk-frontend-homework', { commits: 1, lines: { additions: 5, deletions: 1 }, totalPRCount: 1, ratio: 0.03 }],
+  ['fake-project', { commits: 1, lines: { additions: 5, deletions: 1 }, totalPRCount: 1, ratio: 0.03 }],
+]
+
 export default dummy
