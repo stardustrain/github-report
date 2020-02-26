@@ -25,10 +25,6 @@ const query = (from: string, to: string) => `
   query {
     search(query: "author:stardustrain created:${from}..${to}", type: ISSUE, first:100) {
       issueCount
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
       nodes {
         __typename
         ... on PullRequest {
