@@ -1,7 +1,8 @@
 import { isNil, isEmpty, take, addIndex, map, pipe, join } from 'ramda'
 import { getTotalPRCountEmogi, getPersonalProjectPRCountEmogi } from './messageUtils'
 
-import { REPOSITORY_NAME, PR_INFORMATION, PRInformation, Contributions } from './utils'
+import { REPOSITORY_NAME, PR_INFORMATION } from './utils'
+import type { PRInformation, Contributions } from './utils'
 
 type Contribution = Contributions[number]
 

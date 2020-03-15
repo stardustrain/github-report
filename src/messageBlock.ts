@@ -1,4 +1,4 @@
-import { TotalInformation, PersonalProjectInformation, ContributionsInformation } from './messages'
+import type { TotalInformation, PersonalProjectInformation, ContributionsInformation } from './messages'
 
 interface MessageParams {
   from: string
