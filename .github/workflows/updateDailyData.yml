@@ -1,0 +1,30 @@
+name: Update daily data
+
+on:
+  schedule:
+    - cron: '* 1 * * 1-6'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm install
+      - name: Run test
+        run: npm run test
+  run:
+    name: Update firestore
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_API_KEY: ${{ secrets.GITHUB_API_KEY }}
+      FIRESTORE_SA_KEY: ${{ secrets.FIRESTORE_SA_KEY }}
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm install
+      - name: Update data
+        run: npm run start

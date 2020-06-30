@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --config=jest.config.js",
     "build": "tsc --project tsconfig.json",
-    "start": "ts-node --files src/index.ts"
+    "start": "ts-node --files src/updateDailyData.ts"
   },
   "repository": {
     "type": "git",
