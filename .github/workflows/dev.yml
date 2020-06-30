@@ -1,10 +1,8 @@
 name: Test for pull request
 
 on:
-  push:
+  pull_request:
     branches:
-      - dev
-    pull_request:
       - master
 
 jobs:
