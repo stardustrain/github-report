@@ -1,4 +1,5 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 import { getFilteredPullrequest, getToday } from './utils'
 
@@ -41,9 +42,24 @@ const query = (from: string, to: string) => `
 `
 
 export const getDailyData = async () => {
-  try {
-  } catch (e) {
-    console.error(e)
+  const yesterday = dayjs()
+    .utc()
+    .subtract(1, 'day')
+    .format('YYYY-MM-DD')
+
+  const {
+    data: {
+      data: {
+        search: { nodes },
+      },
+    },
+  } = await instance.post<GithubResponse>('', {
+    query: query(yesterday, yesterday),
+  })
+
+  return {
+    nodes: getFilteredPullrequest(nodes),
+    date: yesterday,
   }
 }
 
