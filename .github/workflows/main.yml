@@ -45,7 +45,7 @@ jobs:
           name: dist
           path: ./dist
       - name: Activate GCP service account
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@master
         with:
           version: '274.0.1'
           service_account_key: ${{ secrets.GCP_SA_KEY }}
