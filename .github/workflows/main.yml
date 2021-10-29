@@ -1,4 +1,4 @@
-name: Deploy process
+name: Notification process
 
 on:
   push:
@@ -6,49 +6,16 @@ on:
       - master
 
 jobs:
-  test:
-    name: Test
+  notify:
+    name: Notify
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - name: Checkout master
         uses: actions/checkout@master
-      - name: Install dependencies
-        run: npm install
-      - name: Run test
-        run: npm run test
-  build:
-    name: Build
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@master
-      - name: Install dependencies
-        run: npm install
       - name: Build
-        run: npm run build
-      - name: Archive build artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: ./dist
-  deploy:
-    name: Deploy
-    needs: [test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@master
-      - name: Download artifact
-        uses: actions/download-artifact@master
-        with:
-          name: dist
-          path: ./dist
-      - name: Activate GCP service account
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          version: '274.0.1'
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-      - name: Deploy
-        run: |
-          gcloud functions deploy sendGithubWeeklyReportWebhook --runtime nodejs10 --trigger-topic github-weekly --project=${{ secrets.PROJECT_ID }} --region asia-northeast1 --update-env-vars GITHUB_API_KEY=${{ secrets.GITHUB_API_KEY }},HOOK_URL=${{ secrets.HOOK_URL }}
+        run: yarn build
+      - name: Slack notify
+        run: yarn run start:notify
