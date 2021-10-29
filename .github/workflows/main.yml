@@ -15,5 +15,7 @@ jobs:
           node-version: '14'
       - name: Checkout master
         uses: actions/checkout@master
+      - name: Build
+        run: yarn build
       - name: Slack notify
         run: yarn run start:notify
