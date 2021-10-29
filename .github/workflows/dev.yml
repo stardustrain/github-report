@@ -31,3 +31,5 @@ jobs:
         uses: actions/checkout@master
       - name: Build
         run: yarn build
+      - name: Dry run
+        run: DRY_RUN=true yarn run start:notify

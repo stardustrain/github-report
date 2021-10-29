@@ -35,9 +35,11 @@ const generateMessageBlock = async () => {
 }
 
 const sendGithubWeeklyReportWebhook = async () => {
-  const url = process.env.HOOK_URL
+  const url = process.env.HOOK_URL ?? ''
+  const isDryRun = Boolean(process.env.DRY_RUN ?? false)
+
   try {
-    if (isNil(url)) {
+    if (isEmpty(url)) {
       throw Error('Does not provide slack hook url.')
     }
 
@@ -47,8 +49,9 @@ const sendGithubWeeklyReportWebhook = async () => {
     if (isNil(messageBlock)) {
       throw Error('Occured error when generating message block.')
     }
-
-    await webhook.send(messageBlock)
+    if (!isDryRun) {
+      await webhook.send(messageBlock)
+    }
     console.info(JSON.stringify(messageBlock))
   } catch (e) {
     console.error(e)
