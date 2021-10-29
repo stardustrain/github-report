@@ -1,7 +1,8 @@
 name: Notification process
 
 on:
-  schedule: '1 16 * * 5'
+  schedule:
+    - cron: '1 16 * * 5'
 
 jobs:
   notify:
