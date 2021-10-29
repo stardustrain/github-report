@@ -34,7 +34,7 @@ const generateMessageBlock = async () => {
   })
 }
 
-export const sendGithubWeeklyReportWebhook = async () => {
+const sendGithubWeeklyReportWebhook = async () => {
   const url = process.env.HOOK_URL
   try {
     if (isNil(url)) {
@@ -54,3 +54,5 @@ export const sendGithubWeeklyReportWebhook = async () => {
     console.error(e)
   }
 }
+
+sendGithubWeeklyReportWebhook()

@@ -1,9 +1,7 @@
 name: Notification process
 
 on:
-  push:
-    branches:
-      - master
+  schedule: '1 16 * * 5'
 
 jobs:
   notify:
