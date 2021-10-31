@@ -27,7 +27,7 @@ Send weekly data of Github to channel in slack at every Sat 1:00 am.
 
 ## Run project
 
-1. Set env variable GITHUB_API_KEY and HOOK_URL.
+1. Set env variable GH_API_KEY and HOOK_URL.
 2. `git clone https://github.com/stardustrain/github-report.git`
 3. `cd github-report && npm install && npm run start`
 
@@ -35,5 +35,5 @@ Send weekly data of Github to channel in slack at every Sat 1:00 am.
 
 1. Install [gcloud sdk](https://cloud.google.com/sdk/docs/downloads-interactive?hl=ko).
 2. Run `gcloud init` command, and select(or create) project.
-3. First time, run `npm run build` and executing `gcloud functions deploy sendGithubWeeklyReportWebhook --runtime RUNTIME --trigger-topic TOPIC_NAME --update-env-vars GITHUB_API_KEY=YOUR_KEY,HOOK_URL=YOUR_URL`, cause set to env variable in GCP functions.
+3. First time, run `npm run build` and executing `gcloud functions deploy sendGithubWeeklyReportWebhook --runtime RUNTIME --trigger-topic TOPIC_NAME --update-env-vars GH_API_KEY=YOUR_KEY,HOOK_URL=YOUR_URL`, cause set to env variable in GCP functions.
 4. If success to deploy, use `npm run deploy` command on next deployment.

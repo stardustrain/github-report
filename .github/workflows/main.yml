@@ -9,7 +9,7 @@ jobs:
     name: Notify
     runs-on: ubuntu-latest
     env:
-      GITHUB_API_KEY: ${{ secrets.GITHUB_API_KEY }}
+      GH_API_KEY: ${{ secrets.GH_API_KEY }}
       HOOK_URL: ${{ secrets.HOOK_URL }}
     steps:
       - uses: actions/setup-node@v2
