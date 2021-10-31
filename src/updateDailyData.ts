@@ -2,20 +2,20 @@ import { compose, omit, map } from 'ramda'
 import { getDailyData } from './api'
 import { create } from './firestore'
 
-const getGeneratedGithubData = (nodes: PullrequestNode[]) =>
+import type { PullrequestNodeFragment } from './@types/model'
+
+const getGeneratedGithubData = (nodes: PullrequestNodeFragment[]) =>
   compose(
-    map(node => ({
+    map((node) => ({
       ...node,
-      author: node.author.login,
+      author: node.author?.login,
       commits: node.commits.totalCount,
       repository: {
         name: node.repository.name,
         owner: node.repository.owner.login,
       },
     })),
-    map<PullrequestNode, Omit<PullrequestNode, '__typename'>>(
-      omit<'__typename'>(['__typename'])
-    )
+    map<PullrequestNodeFragment, Omit<PullrequestNodeFragment, '__typename'>>(omit<'__typename'>(['__typename']))
   )(nodes)
 export type GeneratedGithubData = ReturnType<typeof getGeneratedGithubData>
 

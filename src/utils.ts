@@ -1,21 +1,20 @@
-import { groupBy, keys, map, pipe, sortBy, prop, negate } from 'ramda'
+import { groupBy, keys, map, pipe, sortBy, prop, negate, isNil } from 'ramda'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+
+import type { SearchResultFragment, PullrequestNodeFragment } from './@types/model'
 
 dayjs.extend(utc)
 
 export const REPOSITORY_NAME = 0
 export const PR_INFORMATION = 1
 
-export const getToday = () =>
-  dayjs()
-    .utc()
-    .utcOffset(9)
+export const getToday = () => dayjs().utc().utcOffset(9)
 
-export const getFilteredPullrequest = (nodes: ResultNode[]) =>
-  nodes.filter(prNode => prNode.__typename === 'PullRequest') as PullrequestNode[]
+export const getFilteredPullrequest = (nodes: SearchResultFragment['nodes']) =>
+  (nodes ?? []).flatMap((node) => (isNil(node) || node.__typename !== 'PullRequest' ? [] : [node]))
 
-export const getLineCount = (prNodes: PullrequestNode[]) =>
+export const getLineCount = (prNodes: PullrequestNodeFragment[]) =>
   prNodes.reduce(
     (acc, prNode) => ({
       additions: acc.additions + (prNode.additions ?? 0),
@@ -27,16 +26,16 @@ export const getLineCount = (prNodes: PullrequestNode[]) =>
     }
   )
 
-export const getCommitsCount = (prNodes: PullrequestNode[]) =>
+export const getCommitsCount = (prNodes: PullrequestNodeFragment[]) =>
   prNodes.reduce((acc, prNode) => acc + (prNode?.commits?.totalCount ?? 0), 0)
 
-export const getPersonalProjects = (prNodes: PullrequestNode[]) =>
-  prNodes.filter(prNode => prNode.repository.owner.login === 'stardustrain')
+export const getPersonalProjects = (prNodes: PullrequestNodeFragment[]) =>
+  prNodes.filter((prNode) => prNode.repository.owner.login === 'stardustrain')
 
-export const getProjectsGroupbyRepository = (prNodes: PullrequestNode[]) =>
-  groupBy(node => node.repository.name, prNodes)
+export const getProjectsGroupbyRepository = (prNodes: PullrequestNodeFragment[]) =>
+  groupBy((node) => node.repository.name, prNodes)
 
-export const generatePRInformation = (prNodes: PullrequestNode[]) => ({
+export const generatePRInformation = (prNodes: PullrequestNodeFragment[]) => ({
   lines: getLineCount(prNodes),
   commits: getCommitsCount(prNodes),
   totalPRCount: prNodes.length,
@@ -48,12 +47,12 @@ export const getContributionByRepository = (
 ) =>
   pipe(
     keys,
-    map<string, [string, PRInformation]>(key => [key, generatePRInformation(projects[key])]),
-    sortBy(v => negate(prop(criteria)(v[PR_INFORMATION])))
+    map<string, [string, PRInformation]>((key) => [key, generatePRInformation(projects[key])]),
+    sortBy((v) => negate(prop(criteria)(v[PR_INFORMATION])))
   )(projects)
 
 export const calculateContributionRatio = (contributions: ContributionByRepository, totalPRCount: number) =>
-  contributions.map<[string, ContributionRatio]>(contribution => [
+  contributions.map<[string, ContributionRatio]>((contribution) => [
     contribution[REPOSITORY_NAME],
     {
       ...contribution[PR_INFORMATION],

@@ -1,0 +1,11 @@
+overwrite: true
+schema:
+  - 'https://api.github.com/graphql':
+      headers:
+        Authorization: bearer ${GH_API_KEY}
+documents: 'src/api.ts'
+generates:
+  './src/@types/model.d.ts':
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
