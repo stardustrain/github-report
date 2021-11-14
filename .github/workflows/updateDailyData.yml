@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v2
-          with:
-            node-version: '14'
+        with:
+          node-version: '14'
       - name: Checkout master
         uses: actions/checkout@master
       - name: Run test
@@ -24,8 +24,8 @@ jobs:
       FIRESTORE_SA_KEY: ${{ secrets.FIRESTORE_SA_KEY }}
     steps:
       - uses: actions/setup-node@v2
-            with:
-              node-version: '14'
+        with:
+          node-version: '14'
       - name: Checkout master
         uses: actions/checkout@master
       - name: Build
